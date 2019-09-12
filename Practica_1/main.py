@@ -1,4 +1,4 @@
 from TLU import *
 
-tlu = TLU(.2)
+tlu = TLU(.5)
 tlu.AND()
