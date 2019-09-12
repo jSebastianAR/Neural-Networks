@@ -10,6 +10,7 @@ class TLU(object):
 		self.OR_vector = np.array([[0,0],[0,1],[1,0],[1,1]]) #Training dataset for OR Gate
 		self.NOT_vector = np.array([[0,0],[0,1],[1,0],[1,1]])
 		self.threshold = 1 #Umbral value used for the TLU's activation function
+		self.type_gate = ""
 
 	
 
@@ -38,6 +39,32 @@ class TLU(object):
 
 		print("Final weights for AND Gate {}".format(self.weights))
 
+	def train_TLU(self,gate):	
+		self.weights = np.random.rand(1,2) #random inialized array for weights wiht a value between 0 and 1
+		self.type_gate = gate
+		flag = False #flag which finish the loop when there is no change in the weights
+		print("Initial weights {}".format(self.weights))
+		
+		x = 0
+		while(flag==False): #while changes in weigths were made we have to continue with train
+			#First we need to multiply the inouts vector and the weights vector
+			
+			flag = True #First, we assume that flag it's true
+			for i in range(0,4): #For each training element
+				mul = np.matmul(self.weights,self.AND_vector[i]) #we do the dot product between weigths vector and the input vector
+				final_result = self.Activation_Function(mul)#get the result from the activation function
+				expected_result = self.type_Gate(self.AND_vector[i][0],self.AND_vector[i][1]) #get the exactly result that we want
+				print("final_result: {} expected_result: {}".format(final_result,expected_result))
+				if(final_result!=expected_result): #if our result is not the same that the expected result
+					self.updateTLU(expected_result,final_result,self.AND_vector[i][:])#update de weights
+					flag = False#there is a change of vectors thus we put in false to avoid the while loop finishes
+				#input()
+			x = x+1
+			
+			print("Epoca {} terminada".format(x))
+
+		print("Final weights for {} Gate {}".format(self.type_gate,self.weights))
+
 
 	"""
 		Do the formula for update the weights that's equal to Wt = W + lr(t-y)*X 
@@ -59,4 +86,10 @@ class TLU(object):
 			return 1
 		else:
 			return 0
+
+	def type_Gate(self,value1,value2):
+		if "and" == self.type_gate:
+			return value1 and value2
+		elif "or" == self.type_gate:
+			return value1 or value2
 
