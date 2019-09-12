@@ -27,7 +27,7 @@ class TLU(object):
 			#First we need to multiply the inouts vector and the weights vector
 			flag = True
 			for i in range(0,4):
-				mul = np.add(np.matmul(self.weights,self.AND_vector[i]),self.bias)
+				mul = np.matmul(self.weights,self.AND_vector[i])
 				final_result = self.compare(mul)
 				expected_result = self.AND_vector[i][0] and self.AND_vector[i][0]
 				print("final_result: {} expected_result: {}".format(final_result,expected_result))
